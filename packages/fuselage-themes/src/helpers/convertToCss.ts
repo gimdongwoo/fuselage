@@ -1,6 +1,6 @@
 export const convertToCss = (
   values: Record<string, string>,
-  prefix = '--rcx-color-',
+  prefix: string,
   selector = ':root'
 ) =>
   `${selector} {\n${Object.entries(values)

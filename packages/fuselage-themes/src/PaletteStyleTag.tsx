@@ -18,7 +18,7 @@ const themes = {
 
 export const PaletteStyleTag = memo(function PaletteStyleTag({
   theme = 'light',
-  prefix,
+  prefix = '--rcx-color',
   selector,
 }: {
   theme: Themes;
@@ -27,7 +27,6 @@ export const PaletteStyleTag = memo(function PaletteStyleTag({
 }) {
   const palette = convertToCss(themes[theme], prefix, selector);
 
-  console.log(prefix);
   return (
     <>
       {createPortal(
