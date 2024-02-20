@@ -27,7 +27,6 @@
     plain,
     quote,
     reducePlainTexts,
-    strike,
     task,
     tasks,
     unorderedList,
@@ -339,19 +338,19 @@ AutoLinkURLBody =  !(Extra* (Whitespace / EndOfLine)) .
  * Emphasis
  *
 */
-Emphasis = Bold / Italic / Strikethrough
+Emphasis = Bold / Italic
 
 /**
  *
  * Emphasis for References
  *
 */
-EmphasisForReferences = BoldForReferences / ItalicForReferences / StrikethroughForReferences
+EmphasisForReferences = BoldForReferences / ItalicForReferences
 
 /**
  *
- * Italic, Bold and Strike
- * e.g: __italic__, _italic_, **bold**, __*bold italic*__, ~~strikethrough~~
+ * Italic, Bold
+ * e.g: __italic__, _italic_, **bold**, __*bold italic*__
  *
  */
 
@@ -378,7 +377,6 @@ ItalicContentItem
   / UserMention
   / ChannelMention
   / Bold
-  / Strikethrough
   / Emoji
   / Emoticon
   / AnyItalic
@@ -389,14 +387,7 @@ Bold = [\x2A] [\x2A] @BoldContent [\x2A] [\x2A] / [\x2A] @BoldContent [\x2A]
 
 BoldContent = text:BoldContentItem+ { return bold(reducePlainTexts(text)); }
 
-BoldContentItem = Whitespace / InlineCode / References / UserMention / ChannelMention / Italic / Strikethrough / Emoji / Emoticon / AnyBold / Line
-
-/* Strike */
-Strikethrough = [\x7E] [\x7E] @StrikethroughContent [\x7E] [\x7E] / [\x7E] @StrikethroughContent [\x7E]
-
-StrikethroughContent = text:(InlineCode / Whitespace / References / UserMention / ChannelMention / Italic / Bold / Emoji / Emoticon / AnyStrike / Line)+ {
-      return strike(reducePlainTexts(text));
-    }
+BoldContentItem = Whitespace / InlineCode / References / UserMention / ChannelMention / Italic / Emoji / Emoticon / AnyBold / Line
 
 /* Italic for References */
 ItalicForReferences
@@ -419,7 +410,6 @@ ItalicContentItemForReferences
   / UserMention
   / ChannelMention
   / BoldForReferences
-  / StrikethroughForReferences
   / Emoji
   / Emoticon
   / AnyItalic
@@ -429,18 +419,9 @@ ItalicContentItemForReferences
 /* Bold for References */
 BoldForReferences = [\x2A] [\x2A] @BoldContentForReferences [\x2A] [\x2A] / [\x2A] @BoldContentForReferences [\x2A]
 
-BoldContentForReferences = text:(Whitespace / UserMention / ChannelMention / ItalicForReferences / StrikethroughForReferences / Emoji / Emoticon / AnyBold / Line / InlineCode)+ { return bold(reducePlainTexts(text)); }
-
-/* Strike for References */
-StrikethroughForReferences = [\x7E] [\x7E] @StrikethroughContentForReferences [\x7E] [\x7E] / [\x7E] @StrikethroughContentForReferences [\x7E]
-
-StrikethroughContentForReferences = text:(Whitespace / UserMention / ChannelMention / ItalicForReferences / BoldForReferences / Emoji / Emoticon / AnyStrike / Line / InlineCode)+ {
-      return strike(reducePlainTexts(text));
-    }
+BoldContentForReferences = text:(Whitespace / UserMention / ChannelMention / ItalicForReferences / Emoji / Emoticon / AnyBold / Line / InlineCode)+ { return bold(reducePlainTexts(text)); }
 
 AnyBold = t:[^\x0a\* ] { return plain(t); }
-
-AnyStrike = t:[^\x0a\~ ] { return plain(t); }
 
 AnyItalic = t:[^\x0a\_ ] { return plain(t); }
 
